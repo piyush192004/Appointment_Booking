@@ -1,5 +1,6 @@
 import React from "react";
 import SpecialityMenu from "../components/SpecialityMenu";
+import TopDoctors from "../components/TopDoctors";
 import Header from "./../components/Header";
 
 const Home = () => {
@@ -7,6 +8,7 @@ const Home = () => {
     <div>
       <Header />
       <SpecialityMenu />
+      <TopDoctors />
     </div>
   );
 };
