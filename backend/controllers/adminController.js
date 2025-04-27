@@ -51,11 +51,11 @@ const addDoctor = async (req, res) => {
       });
     }
 
-    //hasing doctor password
+    // hashing doctor password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    //upload image to cloudinary
+    // Upload image to Cloudinary
     const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
       resource_type: "image",
     });
@@ -73,6 +73,7 @@ const addDoctor = async (req, res) => {
       fee,
       address: JSON.parse(address),
       date: Date.now(),
+      slots_booked,
     };
 
     const newDoctor = new doctorModel(docData);
@@ -80,7 +81,7 @@ const addDoctor = async (req, res) => {
     res.json({ success: true, message: "Doctor Added" });
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -92,13 +93,16 @@ const loginAdmin = async (req, res) => {
       email === process.env.ADMIN_EMAIL &&
       password === process.env.ADMIN_PASSWORD
     ) {
-      const token = jwt.sign(email + password, process.env.JWT_SECRET);
+      const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+        expiresIn: "2d",
+      });
+
       res.json({ success: true, token });
     } else {
       res.json({ success: false, message: "Invalid Credentials" });
     }
   } catch (error) {
-    res.json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
