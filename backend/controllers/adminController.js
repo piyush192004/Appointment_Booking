@@ -73,7 +73,6 @@ const addDoctor = async (req, res) => {
       fee,
       address: JSON.parse(address),
       date: Date.now(),
-      slots_booked,
     };
 
     const newDoctor = new doctorModel(docData);
@@ -105,5 +104,15 @@ const loginAdmin = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+//API to get all doctors list for admin panel
 
-export { addDoctor, loginAdmin };
+const allDoctors = async (req, res) => {
+  try {
+    const doctors = await doctorModel.find({}).select("-password");
+    res.json({ success: true, doctors });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export { addDoctor, loginAdmin, allDoctors };

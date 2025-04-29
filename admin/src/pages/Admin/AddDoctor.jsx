@@ -62,6 +62,8 @@ const AddDoctor = () => {
         setName("");
         setEmail("");
         setPassword("");
+        setExperience("1 Year");
+        setSpeciality("General Physician");
         setDegree("");
         setFees("");
         setAbout("");
